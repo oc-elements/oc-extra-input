@@ -1,0 +1,68 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<!--
+`oc-extra-input`
+Element for editing product extra details
+
+@demo demo/index.html 
+-->
+
+<dom-module id="oc-extra-input">
+
+  <style>
+    :host {
+      display: block;
+    }
+    paper-button {
+      margin: 10px
+    }
+  </style>
+
+  <template>
+    <paper-input id="inputName" label="Name" required auto-validate error-message="Please provide a name"></paper-input>
+    <paper-input id="inputDescription" label="Description" required auto-validate error-message="Please provide a description"></paper-input>
+    <paper-input id="inputPrice" label="Price" required auto-validate error-message="Please provide a price"></paper-input>
+    <paper-button on-tap="_onOk" >Create Extra</paper-button>
+    <paper-button on-tap="_onCancel" >Cancel</paper-button>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'oc-extra-input',
+
+      _onOk: function() {
+        if (this._valid) {
+          this.fire('create', {
+            name: this.$.inputName.value,
+            description: this.$.inputDescription.value,
+            price: this.$.inputPrice.value
+          });
+        }
+      },
+
+      _onCancel: function() {
+        this.fire('cancel');
+      },
+
+      _valid: function() {
+        return !(this.$.inputName.invalid || this.$.inputPrice.invalid || this.$.inputDescription.invalid);
+      },
+
+      clear: function() {
+        this.$.inputName.autoValidate = false;
+        this.$.inputName.value = '';
+        this.$.inputName.autoValidate = true;
+        this.$.inputDescription.autoValidate = false;
+        this.$.inputDescription.value = '';
+        this.$.inputDescription.autoValidate = true;
+        this.$.inputPrice.autoValidate = false;
+        this.$.inputPrice.value = '';
+        this.$.inputPrice.autoValidate = true;
+      }
+    });
+  </script>
+</dom-module>
